@@ -184,3 +184,6 @@ a {
     max-height: 40px;
 }
 
+.notClick {
+    pointer-events: none;
+}

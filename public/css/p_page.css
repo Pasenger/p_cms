@@ -1,6 +1,7 @@
 /* 内容区域 */
 .pContent {
     position:relative;
+    min-height: 900px;
 }
 
 /*预览区*/

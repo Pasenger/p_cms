@@ -110,3 +110,6 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+.phalcon/
+cache/*.php
+!cache/readme
