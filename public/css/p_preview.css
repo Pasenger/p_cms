@@ -1,0 +1,186 @@
+a {
+    text-decoration:none;
+    color: #0c0c0c;
+}
+
+/* iPhone6背景 */
+.iphonePreview {
+    height: 888px;
+    width: 435px;
+    background-image: url("../img/iPhone6_white.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+/*预览区域*/
+.previewArea {
+    padding: 130px 27px 0px 27px;
+}
+
+/*页眉标题*/
+.pageTitle {
+    font-size: 10pt;
+    color: #FFFFFF;
+    height: 20px;
+    background-color: #313944;
+    line-height: 20px;
+    overflow: hidden;
+}
+
+.pageTitle p {
+    margin-left: 5px;
+}
+
+/* 地市广告 */
+.cityAvert {
+    float: left;
+    width: 100%;
+    padding: 10px 10px 0px 10px;
+}
+
+/*地市广告左栏目*/
+.cityAvertLeft {
+    float: left;
+    width: 50%;
+    padding-right: 2px;
+}
+
+/*地市广告右栏目*/
+.cityAvertRight {
+    width: 50%;
+    float: right;
+    padding-left: 3px;
+}
+
+/* 推广游戏/应用标题 */
+.hotRecTitle {
+    float: left;
+    width: 100%;
+    padding: 5px 10px 0px 10px;
+}
+
+/*推广游戏/应用标题左栏目*/
+.hotRecTitleLeft {
+    float: left;
+    width: 50%;
+    padding: 0px 2px 0px 0px;
+}
+
+/*推广游戏/应用右标题栏目*/
+.hotRecTitleRight {
+    width: 50%;
+    float: right;
+    padding: 0px 0px 0px 3px;
+}
+
+/*热门应用/游戏标题内容*/
+.hotRecTitleContent {
+    float: left;
+    width: 100%;
+}
+
+/*热门应用/游戏标题*/
+.hotRecName {
+    float: left;
+    /*padding-left: 5px;*/
+    font-size: 10pt;
+    font-weight: 600;
+}
+
+/*热门应用/游戏更多*/
+.hotRecMore {
+    float: right;
+    padding-right: 2px;
+    text-align: right;
+    font-size: 10pt;
+    font-weight: 300;
+}
+
+/* 推荐热门应用游戏图片 */
+.hotRecImg {
+    float: left;
+    width: 100%;
+    padding: 5px 10px 0px 10px;
+}
+
+/*推荐热门应用游戏图片左栏目*/
+.hotRecImgLeft {
+    float: left;
+    width: 50%;
+    padding-right: 2px;
+}
+
+/*推荐热门应用游戏图片右栏目*/
+.hotRecImgRight {
+    width: 50%;
+    float: right;
+    padding-left: 3px;
+}
+
+/* 推荐视频标题 */
+.hotVedioTitle {
+    float: left;
+    width: 100%;
+    padding: 5px 10px 0px 10px;
+}
+
+/* 推荐视频标题名称*/
+.hotVedioName {
+    float: left;
+    /*width: 50%;*/
+    padding-right: 2px;
+    font-size: 10pt;
+    font-weight: 600;
+}
+
+/*推荐视频标题更多*/
+.hotVedioMore {
+    /*width: 50%;*/
+    float: right;
+    padding-left: 3px;
+    font-size: 10pt;
+    font-weight: 300;
+}
+
+.hotVedio {
+    float: left;
+    width: 100%;
+    padding: 5px 10px 0px 10px;
+}
+
+/*连接Button*/
+.connBtn {
+    float: left;
+    width: 100%;
+    padding: 15px 10px 15px 10px;
+}
+
+/*连接Button*/
+.connBtnLeft {
+    float: left;
+    padding-right: 2px;
+    width: 50%;
+}
+
+/*连接Button*/
+.connBtnRight {
+    float: right;
+    padding-left: 3px;
+    width: 50%;
+}
+
+/*微信按钮*/
+.connBtnWechat {
+    width: 100%;
+    font-size: 14px;
+    max-height: 40px;
+}
+
+/*手机按钮*/
+.connBtnPhone {
+    background-color: #46b2f3;
+    width: 100%;
+    font-size: 14px;
+    max-height: 40px;
+}
+

@@ -1,0 +1,18 @@
+/* 内容区域 */
+.pContent {
+    position:relative;
+}
+
+/*预览区*/
+.pPreview {
+    position:absolute;
+    left:0;
+    top:0;
+    width:435px;
+    margin-left: 20px;
+}
+
+/*编辑器*/
+.pEdit {
+    margin-left:455px;
+}
