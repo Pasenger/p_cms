@@ -1,0 +1,59 @@
+<div class="row">
+    <form action="#" method="post">
+        <div class="col-lg-2">
+            <div class="form-group">
+                <select class="form-control select2" name="city_id" id="find_city" style="width: 100%;" onchange="onenterprise();">
+                    <option value="0" selected="selected">城市</option>
+                    {% for city in cityList %}
+                    <option value="{{ city.me_id }}">{{ city.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="col-lg-2">
+            <div class="form-group">
+                <select class="form-control select2" name="ssid_id" id="find_ssid" style="width: 100%;">
+                    <option value="0" selected="selected">选择SSID</option>
+                    {% if ssidList != '' %}
+                    {% for ssid in ssidList %}
+                    <option value="{{ ssid.me_id }}">{{ ssid.ssid_name }}</option>
+                    {% endfor %}
+                    {% endif %}
+                </select>
+            </div>
+        </div>
+
+        <div class="col-lg-2">
+            <div class="form-group">
+                <select class="form-control select2" name="enterprise_id" id="find_enterprise" style="width: 100%;">
+                    <option value="0" selected="selected">选择企业客户</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-lg-2">
+            <input name="identification_id" class="form-control" id="find_identification" style="width:100%;" placeholder="认证页名称"/>
+        </div>
+        <div class="col-lg-4">
+            <form class="form-inline" role="form">
+                <button type="button" class="btn btn-success" onclick="onfind();">
+                    <i class="fa fa-search-plus"></i> 查询
+                </button>
+                &nbsp;&nbsp;
+                <a href="/rauth1/add" class="btn btn-info">
+                    <i class="fa fa-plus-square"></i>  添加
+                </a>
+            </form>
+        </div>
+    </form>
+</div>
+
+
+<!-- Select2 -->
+<script src="/adminlte/plugins/select2/select2.full.min.js"></script>
+
+<script>
+    $(".select2").select2();
+
+</script>

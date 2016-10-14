@@ -1,0 +1,12 @@
+/*图片遮罩*/
+.imgShade {
+    z-index:2000;
+    opacity:0.3;
+}
+
+/*帮助文字*/
+.help-msg {
+    color: orangered;
+    font-size: 10pt;
+    font-style: italic;
+}
