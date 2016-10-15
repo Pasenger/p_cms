@@ -69,6 +69,7 @@ class LoginController extends \Phalcon\Mvc\Controller
 
             //保存用户信息到Session
             $this->session->set("username", $username);
+            $this->session->set("userId", $cuser->id);
             $this->session->set("cityId", $cuser->city_id);
             $this->session->set("provinceId", $cuser->province_id);
             $this->session->set("email", $cuser->email);

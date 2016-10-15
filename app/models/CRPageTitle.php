@@ -15,6 +15,13 @@ class CRPageTitle extends \Phalcon\Mvc\Model
     /**
      *
      * @var string
+     * @Column(type="string", length=40, nullable=false)
+     */
+    public $name;
+
+    /**
+     *
+     * @var string
      * @Column(type="string", length=64, nullable=false)
      */
     public $content;
