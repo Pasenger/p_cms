@@ -55,7 +55,7 @@ class LoginController extends \Phalcon\Mvc\Controller
             );
         }else{
             //查询角色
-            $userrole = CUUserRole::find("user_id = " . $cuser->id);
+            $userrole = CUUserRole::findFirst("user_id = " . $cuser->id);
 
             //查询角色, 并缓存
             $roles = CURole::find();
@@ -70,18 +70,12 @@ class LoginController extends \Phalcon\Mvc\Controller
             //保存用户信息到Session
             $this->session->set("username", $username);
             $this->session->set("userId", $cuser->id);
+            $this->session->set("name", $cuser->name);
             $this->session->set("cityId", $cuser->city_id);
             $this->session->set("provinceId", $cuser->province_id);
             $this->session->set("email", $cuser->email);
-
-            if($userrole){
-                $userRoleList = "|";
-                foreach ($userrole as $ur){
-                    $userRoleList .= ($ur->role_id . "|");
-                }
-
-                $this->session->set("roles", $userRoleList);
-            }
+            $this->session->set("role", $userrole->role_id);
+            $this->session->set("roleName", $roleArray[$userrole->role_id]);
 
             return $this->response->redirect("/index/index");
         }

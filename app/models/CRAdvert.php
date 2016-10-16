@@ -41,17 +41,25 @@ class CRAdvert extends \Phalcon\Mvc\Model
 
     /**
      *
-     * @var integer
-     * @Column(type="integer", length=11, nullable=false)
+     * @var string
+     * @Column(type="string", length=2048, nullable=true)
      */
-    public $page_id;
+    public $android_href;
+
+    /**
+     *
+     * @var string
+     * @Column(type="string", length=2048, nullable=true)
+     */
+    public $ios_href;
+
 
     /**
      *
      * @var integer
      * @Column(type="integer", length=11, nullable=false)
      */
-    public $avert_type_id;
+    public $res_type_id;
 
     /**
      *

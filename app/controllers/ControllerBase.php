@@ -15,14 +15,18 @@ class ControllerBase extends Controller
         $this->view->setVar("version", "V3.2");
         $this->view->setVar("nav2Href", "#");
         $this->view->setVar("menu", "");    //选中的menuId
+
+        $this->view->setVar("name", $this->session->get('name'));
+        $this->view->setVar("role", $this->session->get('role'));
+        $this->view->setVar("roleName", $this->session->get('roleName'));
     }
 
     /**
      * 加载城市列表
-     * @param bool $cityId
+     * @param int $cityId
      * @return Array
      */
-    public function getCityList($cityId = false){
+    public function getCityList($cityId = 0){
         $cacheKey = "CITY_$cityId";
 
         $cityList = $this->cache->get($cacheKey);
@@ -30,7 +34,7 @@ class ControllerBase extends Controller
         if($cityList){
            return $cityList;
         }else{
-            if($cityId){
+            if($cityId > 0){
                 $cityList = OCoMeCity::find("me_id = $cityId");
             }else{
                 $cityList = OCoMeCity::find();
@@ -103,6 +107,39 @@ class ControllerBase extends Controller
             $this->cache->save($cacheKey, $hpList);
 
             return $hpList;
+        }
+    }
+
+    /**
+     * 加载字典数据
+     * @param $typeId   type_id
+     * @return array|CDict[]
+     */
+    public function getDict($typeId){
+        $cacheKey = "DICT_$typeId";
+
+        $dictList = $this->cache->get($cacheKey);
+
+        if ($dictList) {
+            return $dictList;
+        } else {
+            if($typeId){
+                $dictList = CDict::find([
+                   "type_id = $typeId",
+                    "order" => "idx_num"
+                ]);
+
+                if(!$dictList){
+                    return [];
+                }
+            }else{
+                $hpList = OCuMeEnterprise::find();
+            }
+
+
+            $this->cache->save($cacheKey, $dictList);
+
+            return $dictList;
         }
     }
 }

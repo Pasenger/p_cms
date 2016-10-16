@@ -1,9 +1,10 @@
 <div class="row">
-    <form action="#" method="post">
+    <input type="hidden" id="role" value="{{ role }}">
+    <form id="searchForm">
         <div class="col-lg-2">
             <div class="form-group">
-                <select class="form-control select2" name="city_id" id="find_city" style="width: 100%;" onchange="onenterprise();">
-                    <option value="0" selected="selected">城市</option>
+                <select class="form-control select2" name="cityId" id="cityId" style="width: 100%;" onchange="resetPage();">
+                    <option value="0" selected="selected">选择城市</option>
                     {% for city in cityList %}
                     <option value="{{ city.me_id }}">{{ city.name }}</option>
                     {% endfor %}
@@ -11,33 +12,25 @@
             </div>
         </div>
 
-        <div class="col-lg-2">
+        <div class="col-lg-3">
             <div class="form-group">
-                <select class="form-control select2" name="ssid_id" id="find_ssid" style="width: 100%;">
-                    <option value="0" selected="selected">选择SSID</option>
-                    {% if ssidList != '' %}
-                    {% for ssid in ssidList %}
-                    <option value="{{ ssid.me_id }}">{{ ssid.ssid_name }}</option>
+                <select id="resType" name="resType" class="form-control select2" name="ssid_id" id="find_ssid" style="width: 100%;" onchange="resetPage();">
+                    <option value="0" selected="selected">选择资源类型</option>
+                    {% for resType in resTypeList %}
+                    <option value="{{ resType.id }}">{{ resType.name }}</option>
                     {% endfor %}
-                    {% endif %}
                 </select>
             </div>
         </div>
 
-        <div class="col-lg-2">
+        <div class="col-lg-3">
             <div class="form-group">
-                <select class="form-control select2" name="enterprise_id" id="find_enterprise" style="width: 100%;">
-                    <option value="0" selected="selected">选择企业客户</option>
-                </select>
+                <input id="resName" name="resName" type="text" class="form-control" placeholder="资源名称" maxlength="20" onchange="resetPage();">
             </div>
-        </div>
-
-        <div class="col-lg-2">
-            <input name="identification_id" class="form-control" id="find_identification" style="width:100%;" placeholder="认证页名称"/>
         </div>
         <div class="col-lg-4">
             <form class="form-inline" role="form">
-                <button type="button" class="btn btn-success" onclick="onfind();">
+                <button id="searchBtn" type="button" class="btn btn-success">
                     <i class="fa fa-search-plus"></i> 查询
                 </button>
                 &nbsp;&nbsp;
@@ -46,7 +39,30 @@
                 </a>
             </form>
         </div>
+        <input type="hidden" name="pageNumber" value="1">
+        <input type="hidden" name="pageCount" value="0">
     </form>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <table id="dataTable" class="table table-bordered table-hover">
+            <tr>
+                <th>资源名称</th>
+                <th class="colContent">内容</th>
+                <th class="colImage" width="60px;">图片</th>
+                <th class="colHref">外链地址</th>
+                <th class="colDownloadHref">下载链接</th>
+                <th>添加时间</th>
+            </tr>
+
+        </table>
+        <ul class="pagination pagination-sm no-margin pull-right">
+            <li id="pageFirst" class="pageNav"><a href="#">上一页</a></li>
+            <li id="1" class="pageNav active"><a href="#">1</a></li>
+            <li id="pageLast" class="pageNav"><a href="#">下一页</a></li>
+        </ul>
+    </div>
 </div>
 
 
@@ -56,4 +72,138 @@
 <script>
     $(".select2").select2();
 
+    $(function () {
+
+    });
+
+    /**
+     * 查询
+     */
+    $("#searchBtn").click(function () {
+        var resType = $("#resType").val();
+        if(resType == 0){
+            swal("", "请选择资源类型!", "warning");
+
+            return;
+        }
+
+        var permisstion = getRolePermission($("#role").val());
+        if(permisstion == 3){   //地市权限
+            if(resType == 20001 || resType == 20004 || resType == 20005){
+                swal("", "该资源类型只有全国管理员可查询!", "warning");
+
+                return;
+            }
+        }
+
+        $("#searchBtn").attr('disabled', 'disabled');
+
+        var formData = new FormData($("#searchForm")[0]);    //文件上传必须使用formData提交
+        $.ajax({
+            url: "/rauth1/find",
+            type: 'POST',
+            data: formData,
+            async: true,
+            dataType: "json",
+            cache: false,
+            contentType: false,
+            processData: false,
+            error: function() {
+                swal("", "提交数据失败,请稍后再试!", "error");
+
+                $("#searchBtn").removeAttr('disabled');
+            },
+            success: function(response) {
+                if(response.code == 0){
+                    var rows = '';
+                    if(resType == 20001){
+                        if($(".colContent").hasClass('hide') == true){
+                            $(".colContent").removeClass('hide');
+                        }
+
+                        if($(".colHref").hasClass('hide') == false){
+                            $(".colHref").addClass('hide');
+                        }
+
+                        if($(".colDownloadHref").hasClass('hide') == false){
+                            $(".colDownloadHref").addClass('hide');
+                        }
+
+                        if($(".colImage").hasClass('hide') == false){
+                            $(".colImage").addClass('hide');
+                        }
+
+                        $.each(response.data, function(idx, obj) {
+                            rows += "<tr>"
+                                + "<td>" + obj.name + "</td>"
+                                + "<td>" + obj.content + "</td>"
+                                + "<td>" + obj.insert_time + "</td>"
+                                + "</tr>"
+                        });
+                    }else {   //banner
+                        if($(".colContent").hasClass('hide') == false){
+                            $(".colContent").addClass('hide');
+                        }
+
+                        if($(".colHref").hasClass('hide') == false){
+                            $(".colHref").addClass('hide');
+                        }
+
+                        if($(".colDownloadHref").hasClass('hide') == false){
+                            $(".colDownloadHref").addClass('hide');
+                        }
+
+                        if($(".colImage").hasClass('hide') == true){
+                            $(".colImage").removeClass('hide');
+                        }
+
+                        $.each(response.data, function(idx, obj) {
+                            rows += "<tr>"
+                                + "<td>" + obj.name + "</td>"
+                                + "<td>" + '<a href="' + obj.img_url + '" target="_blank" class="thumbnail"><img src="' + obj.img_url + '" alt=""></a>' + "</td>"
+                                + "<td>" + obj.insert_time + "</td>"
+                                + "</tr>"
+                        });
+                    }
+
+                    $("#dataTable tr:gt(0)").remove();  //删除表头外的行
+
+                    $("#dataTable tr:last").after(rows);    //插入数据
+
+                    var pageCount = Math.ceil(response.count / 10); //页数
+
+                    $("#pageCount").val(pageCount);
+
+                    pager(pageCount);
+                }else{
+                    swal("", response.message, "error");
+                }
+
+                $("#searchBtn").removeAttr('disabled');
+            }
+        });
+    });
+
+    //分页点击处理
+    $('.pageNav').click(function () {
+        $(".pageNav").each(function(index){
+            if($(this).hasClass('active') == true){
+                $(this).removeClass('active');
+            }
+        });
+
+        $(this).addClass('active');
+
+        $("#pageNumber").val(this.id);
+
+        $("#searchBtn").trigger('click');
+    });
+
+    /**
+     * 重置分页
+     */
+    function resetPage() {
+        $("#pageNumber").val(1);
+        $("#pageCount").val(0);
+    }
 </script>

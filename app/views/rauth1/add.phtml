@@ -1,4 +1,5 @@
 <div class="row">
+    <input type="hidden" id="role" value="{{ role }}">
     <div class="col-lg-12 pContent">
         <!-- 预览区 -->
         <div class="pPreview">
@@ -212,6 +213,8 @@
 <!-- 图片预览 -->
 <script src="/js/imgPreview.js"></script>
 
+<script src="/js/ajaxUtils.js"></script>
+
 <script>
 
     $('#bannerCarousel').carousel({
@@ -225,86 +228,110 @@
      * @param obj
      */
     function config(obj, type) {
-        if($("#title").hasClass("imgShade") == false) {
-            $("#title").addClass("imgShade");
-        }
-
-        if($("#banner").hasClass("imgShade") == false) {
-            $("#banner").addClass("imgShade");
-        }
-
-        if($("#cityAvert1").hasClass("imgShade") == false) {
-            $("#cityAvert1").addClass("imgShade");
-        }
-
-        if($("#cityAvert2").hasClass("imgShade") == false) {
-            $("#cityAvert2").addClass("imgShade");
-        }
-
-        if($("#hotRec1").hasClass("imgShade") == false) {
-            $("#hotRec1").addClass("imgShade");
-        }
-
-        if($("#hotRec2").hasClass("imgShade") == false) {
-            $("#hotRec2").addClass("imgShade");
-        }
-
-        if($("#copyright").hasClass("imgShade") == false) {
-            $("#copyright").addClass("imgShade");
-        }
-
-        var objId = obj.id;
-        if($(obj).hasClass('imgShade') == true){
-            $(obj).removeClass('imgShade');
-        }
-
+        var isConfig = true;
+        var permisstion = getRolePermission($("#role").val());
         switch (type){
             case "title":
-                $("#configTitle").html("页眉标题配置");
-                $("#resType").val(20001);
+                //全国管理员可以配置
+                if(permisstion == 2){
+                    $("#configTitle").html("页眉标题配置");
+                    $("#resType").val(20001);
+                    configTitle();
+                }else{
+                    swal("", "页面标题只有全国管理员可配置", "warning");
 
-                configTitle();
+                    isConfig = false;
+                }
 
                 break;
             case "banner":
                 $("#configTitle").html("Banner配置");
                 $("#resType").val(20002);
-
                 configBanner();
+
                 break;
             case "cityAvert1":
-                $("#configTitle").html("地市广告配置");
-                $("#resType").val(20003);
-
-                configCityAvert();
-                break;
             case "cityAvert2":
-                $("#configTitle").html("地市配置");
-                $("#resType").val(20003);
+                //地市管理员可以配置
+                if(permisstion == 3){
+                    $("#configTitle").html("地市广告配置");
+                    $("#resType").val(20003);
 
-                configCityAvert();
+                    configCityAvert();
+                }else{
+                    swal("", "地市广告只有地市管理员可配置", "warning");
+
+                    isConfig = false;
+                }
+
                 break;
             case "hotRec1":
-                $("#configTitle").html("热门推荐配置");
-                $("#resType").val(20004);
-
-                confgHotRec();
-                break;
             case "hotRec2":
-                $("#configTitle").html("热门推荐配置");
-                $("#resType").val(20004);
+                //全国管理员可以配置
+                if(permisstion == 2){
+                    $("#configTitle").html("热门推荐配置");
+                    $("#resType").val(20004);
 
-                confgHotRec();
+                    confgHotRec();
+                }else{
+                    swal("", "热门推荐只有全国管理员可配置", "warning");
+
+                    isConfig = false;
+                }
+
                 break;
             case "copyright":
-                $("#configTitle").html("版权信息配置");
-                $("#resType").val(20005);
+                //全国管理员可以配置
+                if(permisstion == 2){
+                    $("#configTitle").html("版权信息配置");
+                    $("#resType").val(20005);
 
-                configCopyright();
+                    configCopyright();
+                }else{
+                    swal("", "版权信息配置只有全国管理员可配置", "warning");
+
+                    isConfig = false;
+                }
+
                 break;
             default:
-
         }
+
+        if(isConfig){
+            if($("#title").hasClass("imgShade") == false) {
+                $("#title").addClass("imgShade");
+            }
+
+            if($("#banner").hasClass("imgShade") == false) {
+                $("#banner").addClass("imgShade");
+            }
+
+            if($("#cityAvert1").hasClass("imgShade") == false) {
+                $("#cityAvert1").addClass("imgShade");
+            }
+
+            if($("#cityAvert2").hasClass("imgShade") == false) {
+                $("#cityAvert2").addClass("imgShade");
+            }
+
+            if($("#hotRec1").hasClass("imgShade") == false) {
+                $("#hotRec1").addClass("imgShade");
+            }
+
+            if($("#hotRec2").hasClass("imgShade") == false) {
+                $("#hotRec2").addClass("imgShade");
+            }
+
+            if($("#copyright").hasClass("imgShade") == false) {
+                $("#copyright").addClass("imgShade");
+            }
+
+            var objId = obj.id;
+            if($(obj).hasClass('imgShade') == true){
+                $(obj).removeClass('imgShade');
+            }
+        }
+
     }
 
     /**
@@ -372,8 +399,8 @@
             $("#iosUrl").addClass('hide');
         }
 
-        if($("#imgHrefUrl").hasClass('hide') == true){
-            $("#imgHrefUrl").removeClass('hide');
+        if($("#imgHrefUrl").hasClass('hide') == false){
+            $("#imgHrefUrl").addClass('hide');
         }
 
         if($("#pageTitle").hasClass('hide') == false){
@@ -386,12 +413,12 @@
      * 热门推荐
      */
     function confgHotRec() {
-        if($("#androidUrl").hasClass('hide') == true){
-            $("#androidUrl").removeClass('hide');
+        if($("#androidUrl").hasClass('hide') == false){
+            $("#androidUrl").addlass('hide');
         }
 
-        if($("#iosUrl").hasClass('hide') == true){
-            $("#iosUrl").removeClass('hide');
+        if($("#iosUrl").hasClass('hide') == false){
+            $("#iosUrl").addlass('hide');
         }
 
         if($("#imgHrefUrl").hasClass('hide') == false){
@@ -437,32 +464,32 @@
     $("#saveButton").click(function () {
         $("#saveButton").attr('disabled', 'disabled');
 
-        var resType = $("#resType").val();
-
+        var formData = new FormData($("#addForm")[0]);    //文件上传必须使用formData提交
         $.ajax({
-            cache: false,
-            type: "POST",
             url: "/rauth1/save",
-            data:$('#addForm').serialize(),
+            type: 'POST',
+            data: formData,
+            async: true,
             dataType: "json",
-            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
             error: function() {
-                alert("保存失败，请稍后再试！");
+                swal("", "提交数据失败,请稍后再试!", "error");
 
                 $("#saveButton").removeAttr('disabled');
             },
             success: function(response) {
                 if(response.code == 0){
-                    alert("保存成功！");
+                    swal("", "提交成功", "success");
                     $('#addForm')[0].reset();
                 }else{
-                    alert("错误：" + response.message);
+                    swal("", response.message, "error");
                 }
 
                 $("#saveButton").removeAttr('disabled');
             }
         });
-
     });
 
 </script>
